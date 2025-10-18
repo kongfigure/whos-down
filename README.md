@@ -21,7 +21,6 @@ We built **Who's Down** to make it effortless to say **"I'm Down!"** to plans, a
 | Backend | Firebase (Firestore + Auth) |
 | APIs | Google Maps API, Google Gemini API |
 | Styling | TailwindCSS |
-| Hosting | Vercel |
 | Version Control | GitHub |
 
 ## Features
