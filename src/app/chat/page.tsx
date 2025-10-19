@@ -1,84 +1,90 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import NewFeed from '@/components/chat/NewFeed';
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { useEffect, useState } from "react";
+import NewFeed from "@/components/chat/NewFeed";
+import { auth } from "@/lib/firebase";
+import { onAuthStateChanged, type User } from "firebase/auth";
 
-interface ChatMessage {
+/** Local message shape (simple for demo) */
+type ChatMessage = {
   id: number;
   name: string;
   content: string;
-}
+};
 
-function ChatPage() {
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+export default function ChatPage() {
   const [user, setUser] = useState<User | null>(null);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    // Seed a couple so the feed isn't empty
+    { id: 1, name: "Ava L.", content: "Hey! Anyone down for boba at 7?" },
+    { id: 2, name: "Ben P.", content: "Study break at Odegaard? :)" },
+  ]);
 
+  // Keep auth state in sync (uses shared firebase instance)
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-    });
-    return () => unsubscribe();
+    const unsub = onAuthStateChanged(auth, (u) => setUser(u));
+    return () => unsub();
   }, []);
 
-  const handleSend = () => {
+  function handleSend() {
     if (!user) {
-      alert("Please log in to send messages.");
+      alert("Please sign in to send messages.");
       return;
     }
-    if (message.trim() === "") return;
+    const text = message.trim();
+    if (!text) return;
 
-    const newMessage: ChatMessage = {
-      id: Date.now(),
-      name: user.displayName || "Anonymous",
-      content: message,
-    };
-
-  const handleSend = () => {
-    if (message.trim() === "") return;
-    console.log("Send message:", message);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        name: user.displayName || user.email || "Anonymous",
+        content: text,
+      },
+    ]);
     setMessage("");
-  };
-
-  const messageToSend: ChatMessage = {
-      id: Date.now(),
-      name: user.displayName || "Anonymous",
-      content: message,
-    };
-
-    setMessages([...messages, messageToSend]);
-    setMessage("");
-  };
+  }
 
   return (
-    <div className="flex flex-col min-h-screen p-6 bg-[var(--cream)]/40 rounded-lg">
-      <div className="mt-5 mb-5 font-bold text-lg">
-        People you may know or who have
-      </div>
-      <div className="flex-1 overflow-y-auto mb-4">
-        Chat Feed
-      </div>
-      <NewFeed messages={messages} />
+    <div className="flex min-h-screen flex-col gap-4 p-6">
+      <header className="mb-2">
+        <h1 className="text-2xl font-semibold">Chat</h1>
+        <p className="text-sm opacity-80">
+          {user ? `Signed in as ${user.displayName ?? user.email}` : "Not signed in"}
+        </p>
+      </header>
 
+      {/* People you may know — teammate's section, kept */}
+      <section className="rounded-xl bg-white/10 p-4">
+        <div className="mb-3 font-medium">People you may know</div>
+        <div className="text-sm opacity-80">Coming soon…</div>
+      </section>
+
+      {/* Chat feed — teammate's NewFeed component, kept */}
+      <section className="flex-1 overflow-y-auto rounded-xl bg-white/10 p-4">
+        <div className="mb-3 text-sm opacity-80">Chat Feed</div>
+        <NewFeed messages={messages} />
+      </section>
+
+      {/* Composer */}
       <div className="flex items-center gap-2">
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type a message..."
-          className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--mauve)]"
+          placeholder={user ? "Type a message…" : "Sign in to chat"}
+          disabled={!user}
+          className="flex-1 rounded-full border border-white/30 bg-transparent px-4 py-2 outline-none focus:ring-2 focus:ring-[var(--mauve)] disabled:opacity-50"
         />
         <button
           onClick={handleSend}
-          className="px-4 py-2 bg-[var(--mauve)] text-white rounded-full font-semibold hover:bg-purple-700"
+          disabled={!user || !message.trim()}
+          className="rounded-full bg-[var(--mauve)] px-4 py-2 font-semibold text-white hover:bg-[var(--mauve)]/80 disabled:opacity-50"
         >
           Send
         </button>
       </div>
     </div>
-  )
+  );
 }
-
-export default ChatPage
