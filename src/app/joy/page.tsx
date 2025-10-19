@@ -118,7 +118,7 @@ export default function JoyPage() {
           Reset
         </button>
       </div>
-      <p className="text-sm text-white/80">
+      <p className="text-sm text-primary/80">
         Three AI-generated mini challenges for today. Add your own or generate more!
       </p>
 
