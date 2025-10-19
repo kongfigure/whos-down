@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root{
+  --sage:#9aa27a;        /* background */
+  --mauve:#b57c86;       /* tabs/buttons */
+  --cream:#eee7c8;       /* cards */
+  --rose:#d8a6a9;        /* inner card */
+  --ink:#1f1f1f;         /* text */
 }
 
 @theme inline {

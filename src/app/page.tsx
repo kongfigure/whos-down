@@ -59,6 +59,11 @@ export default function Home() {
           >
             Sign out
           </button>
+
+          <div className="mt-6 w-full max-w-3xl space-y-4">
+            <p>Community Posts</p>
+          </div>
+        
         </>
       ) : (
         <button
