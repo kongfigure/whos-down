@@ -36,7 +36,7 @@ export default function PostFeed({ messages }: PostFeedProps) {
     </div>
   </div>
       ))}
-      {messages.length === 0 && <div className="text-gray-400">Chat Feed</div>}
+      {messages.length === 0 && <div className="mt-5 mb-5 font-bold text-lg">Chat Feed</div>}
     </div>
   );
 }
