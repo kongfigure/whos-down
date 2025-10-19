@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
 
     const prompt = `
 You help college students spark small moments of joy.
-Return ${count} SHORT, actionable, inclusive challenges. Max ~12 words each.
+Return ${count} SHORT, actionable, inclusive challenges to do together during hangouts. Max ~12 words each.
 Avoid duplicates of: ${existing.join(" | ") || "(none)"}
 If mood is provided, tailor tone slightly. Mood: ${mood ?? "unknown"}
 
