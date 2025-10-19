@@ -107,7 +107,7 @@ export default function JoyPage() {
     <main className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">🎉 Joy Challenge</h1>
       <p className="text-sm text-white/80">
-        Three AI-generated micro-joys each day. Add your own or generate more!
+        Three AI-generated simple challenges to do during hangouts. Add your own or generate more!
       </p>
 
       {/* Input + buttons */}
